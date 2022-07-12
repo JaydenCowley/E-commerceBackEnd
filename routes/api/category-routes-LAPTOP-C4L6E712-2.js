@@ -52,14 +52,13 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
   // create a new category
+  try{
  const newCatagory = Category.create(req.body);
  res.status(200).json(newCatagory);
- 
-})
-.catch(err => {
-  console.log(err);
-  res.status(500).json(err);
-});
+   } catch (err) {
+    res.status(400).json(err)
+   }
+  });
 
 router.put('/:id', (req, res) => {
   // update a category by its `id` value
@@ -67,21 +66,6 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   // delete a category by its `id` value
-  try {
-    const catagory = await Category.destroy({
-      where: {
-        id: req.params.id
-      }
-    });
-    if (!catagory) {
-      res.status(404).json({message: 'No catagory founde with that id!'});
-      return;
-    }
-
-    res.status(200).json(catagory);
-  } catch (err) {
-    res.status(500).json(err);
-  }
 });
 
 module.exports = router;
